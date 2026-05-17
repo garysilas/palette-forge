@@ -1,0 +1,11 @@
+node_modules
+.next
+coverage
+dist
+.env
+.DS_Store
+.idea
+playwright-report
+test-results
+prisma/dev.db
+prisma/dev.db-journal

@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Palette {
+  id                   String                @id @default(cuid())
+  name                 String?
+  notes                String?
+  tags                 String?
+  colors               String
+  harmonyType          String
+  seedColor            String?
+  isFavorite           Boolean               @default(false)
+  isSaved              Boolean               @default(false)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  collectionId         String?
+  collection           Collection?           @relation(fields: [collectionId], references: [id])
+  historyEvents        PaletteHistory[]
+  accessibilityResults AccessibilityResult[]
+  exports              ExportRecord[]
+}
+
+model PaletteHistory {
+  id        String   @id @default(cuid())
+  paletteId String?
+  palette   Palette? @relation(fields: [paletteId], references: [id])
+  action    String
+  colors    String
+  metadata  String?
+  createdAt DateTime @default(now())
+}
+
+model Collection {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  palettes    Palette[]
+}
+
+model AccessibilityResult {
+  id        String   @id @default(cuid())
+  paletteId String
+  palette   Palette  @relation(fields: [paletteId], references: [id])
+  results   String
+  createdAt DateTime @default(now())
+}
+
+model ExportRecord {
+  id        String   @id @default(cuid())
+  paletteId String
+  palette   Palette  @relation(fields: [paletteId], references: [id])
+  format    String
+  metadata  String?
+  createdAt DateTime @default(now())
+}
+
+model UserSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}

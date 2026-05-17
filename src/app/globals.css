@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: 220 22% 97%;
+  --border: 220 16% 85%;
+  --muted: 215 18% 92%;
+  --accent: 198 68% 48%;
+  --foreground: 220 22% 14%;
+}
+
+.dark {
+  --surface: 224 24% 10%;
+  --border: 220 18% 20%;
+  --muted: 222 18% 16%;
+  --accent: 193 82% 58%;
+  --foreground: 220 18% 96%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: radial-gradient(circle at top, rgba(63, 113, 168, 0.16), transparent 30%), hsl(var(--surface));
+  color: hsl(var(--foreground));
+  font-family: "SF Pro Display", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
