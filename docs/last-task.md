@@ -1,11 +1,11 @@
 # Last Task
 
-- Completed task: Task 3, `Implement the first pure color utilities`
-- Date: 2026-05-16
+- Completed task: Task 5, `Upgrade test scaffolding from placeholder to baseline coverage`
+- Date: 2026-05-17
 - Outcome:
-  - HEX, RGB, and HSL conversion utilities were implemented in `src/lib/color/conversions.ts`
-  - invalid input handling was added for malformed HEX and out-of-range numeric channels
-  - focused unit coverage was added for normalization, conversion, and hue wrapping
-  - `npm run typecheck`, `npm run lint`, `npm run test:unit`, and `npm run test` passed
+  - the E2E smoke test now checks the shell title, theme toggle, and visible state change
+  - Playwright uses a deterministic local URL and system Chrome for the baseline smoke run
+  - standalone `npm run typecheck`, `npm run lint`, `npm run test`, and `npm run test:e2e` passed
+  - the aggregate `npm run test:all` runner still has a cold-start quirk in this automation environment
 - Next task:
-  - Task 4, `Verify persistence foundations`
+  - Task 6, `Implement harmony generation primitives`

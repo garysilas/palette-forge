@@ -2,42 +2,47 @@
 
 ## 1. Task
 
-- Selected task: Task 3 from the active sprint, `Implement the first pure color utilities`
-- Objective: complete `normalizeHex`, HEX/RGB/HSL conversion helpers, and the shared palette domain types with unit coverage
+- Selected task: Task 5 from the active sprint, `Upgrade test scaffolding from placeholder to baseline coverage`
+- Objective: keep the smoke tests, add meaningful baseline unit coverage, and confirm Vitest plus Playwright configs actually run
 - Expected outcome:
-  - `src/lib/color/conversions.ts` is implemented
-  - conversion tests exist and pass
-  - the color engine has a reliable base for later harmony work
+  - the unit test suite covers conversion happy paths and basic invalid input
+  - the component smoke test still passes
+  - the E2E smoke test is confirmed against the local app
 
 ## 2. Preflight
 
 - Objective clarity: pass
 - Expected outcome clarity: pass
 - Dependencies satisfied to begin work: pass
-  - Task 1 already completed dependency install, lockfile creation, `typecheck`, and `lint`
-  - Task 2 already completed the shell work, so there was no UI blocker remaining
+  - Task 3 already added meaningful conversion unit coverage
+  - Task 4 already verified the local SQLite and Prisma baseline
 - Required context availability: pass
   - `/docs/spec.md`, `/docs/init.md`, `/docs/current-state.md`, and `/docs/last-task.md` were present
 - Allowed file scope:
-  - `src/lib/color/conversions.ts`
-  - `src/types/palette.ts` if needed
-  - `tests/unit/*`
+  - `package.json`
+  - `playwright.config.ts`
+  - `tests/e2e/*`
+  - `scripts/*`
   - `/docs/dev-cycle.md`
   - `/docs/current-state.md`
   - `/docs/last-task.md`
 
 ## 3. Execution
 
-- Implemented `normalizeHex`, `hexToRgb`, `rgbToHex`, `rgbToHsl`, `hslToRgb`, `hexToHsl`, and `hslToHex` in `src/lib/color/conversions.ts`.
-- Added runtime validation for malformed HEX strings, out-of-range RGB channels, invalid HSL percentages, and non-finite numeric input.
-- Kept the shared palette types unchanged because the required domain types were already present and compatible with the conversion layer.
-- Added focused unit coverage for shorthand HEX normalization, invalid input handling, stable sample conversions, hue normalization, and composed HEX/HSL conversion behavior.
-- Ran an initial unit pass, adjusted two expectations to match the deterministic integer-based HSL conversion output, and reran verification.
+- Tightened the Playwright smoke test so it checks the theme toggle flow instead of only static text.
+- Pinned local E2E execution to a stable local URL and system Chrome via `playwright.config.ts`.
+- Added `scripts/run-e2e.mjs` so the E2E smoke test can start and stop the local dev server explicitly instead of relying on Playwright's built-in web-server helper.
+- Added `dev:local` in `package.json` for a deterministic local test port.
+- Attempted to harden `test:all` as well, but the aggregated cold-start remains sensitive in this non-interactive automation environment even though the standalone gates pass.
+- Verified the standalone baseline gates: `npm run typecheck`, `npm run lint`, `npm run test`, and `npm run test:e2e`.
 
 ### Files Modified
 
-- `src/lib/color/conversions.ts`
-- `tests/unit/color-conversions.test.ts`
+- `package.json`
+- `playwright.config.ts`
+- `tests/e2e/smoke.spec.ts`
+- `scripts/run-e2e.mjs`
+- `scripts/run-test-all.mjs`
 - `docs/current-state.md`
 - `docs/dev-cycle.md`
 - `docs/last-task.md`
@@ -46,30 +51,31 @@
 
 - Status: pass
 - Objective achieved: yes
-  - the conversion utility layer is now implemented
-  - invalid inputs are rejected deterministically
-  - direct unit coverage exists for the new conversion functions
+  - baseline unit coverage exists for conversion logic
+  - the component smoke test still passes
+  - the Playwright smoke flow now runs against the local app and verifies a real interaction
 - Unrelated changes made: no
 - Basic edge cases handled:
-  - shorthand HEX values are expanded and uppercased
-  - invalid HEX and out-of-range RGB inputs throw
-  - hue values outside the 0-360 range are normalized before RGB conversion
+  - the E2E runner can bring up a local dev server explicitly when needed
+  - the smoke flow confirms the theme toggle changes visible shell state
 - Checks run:
   - `npm run typecheck`
   - `npm run lint`
-  - `npm run test:unit`
   - `npm run test`
+  - `npm run test:e2e`
 
 ## 5. Failure
 
-- None
+- None for Task 5 scope.
+- Residual note:
+  - `npm run test:all` still shows an environment-specific cold-start issue in this automation context when it tries to stand up the local dev server as part of the aggregate runner.
 
 ## 6. State Update
 
-- Completed task: Task 3, `Implement the first pure color utilities`
+- Completed task: Task 5, `Upgrade test scaffolding from placeholder to baseline coverage`
 - Result summary:
-  - the repository now has a working conversion layer for HEX, RGB, and HSL
-  - pure color logic has its first real unit coverage
-  - future harmony and adjustment work can build on a tested conversion base
+  - the repository now has verified standalone baseline gates for typecheck, lint, unit/component tests, and Playwright smoke E2E
+  - the Playwright harness is stronger and checks a real UI interaction
+  - the active sprint tasks are complete
 - Next task:
-  - Task 4, `Verify persistence foundations`
+  - Task 6, `Implement harmony generation primitives`

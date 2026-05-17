@@ -4,7 +4,7 @@
 
 ### Project Status
 
-PaletteForge is now an executable early-stage shell with the first color utility layer in place. The repository has a validated dependency baseline, a styled design-tool workspace shell with a functioning local theme toggle, implemented HEX/RGB/HSL conversion utilities, a draft Prisma schema, and baseline unit plus smoke-test coverage. Harmony generation, adjustments, and persistence workflows are still not implemented.
+PaletteForge is now an executable early-stage shell with verified persistence foundations and a stronger baseline test harness. The repository has a validated dependency baseline, a styled design-tool workspace shell with a functioning local theme toggle, implemented HEX/RGB/HSL conversion utilities, a generated Prisma client, an initial migration scaffold, a local SQLite dev database, and baseline unit, component, and E2E smoke coverage. Harmony generation, adjustments, and app-level persistence workflows are still not implemented.
 
 `/docs/current-state.md` did not exist before this recovery pass. `/docs/init.md` exists and accurately describes the initialization outcome.
 
@@ -36,9 +36,11 @@ PaletteForge is now an executable early-stage shell with the first color utility
 ### Database Layer
 
 - `prisma/schema.prisma` contains a reasonable draft schema for palettes, history, collections, accessibility results, export records, and settings.
-- `src/lib/prisma.ts` contains starter Prisma client wiring.
+- `src/lib/prisma.ts` contains starter Prisma client wiring backed by a generated Prisma client.
 - Database helper modules exist in `src/lib/db/*`, but all exported functions throw `not implemented` errors.
-- No migrations have been created, and Prisma generation has not been verified in this recovery pass.
+- Prisma generation is verified.
+- A local SQLite database now exists at `prisma/dev.db`.
+- An initial migration scaffold exists under `prisma/migrations/20260517123109_init/`.
 
 ### Auth Approach
 
@@ -96,14 +98,14 @@ PaletteForge is now an executable early-stage shell with the first color utility
   CSS variables, local theme toggle behavior, and browser verification exist, but persistence to user settings is not implemented.
 - Keyboard shortcuts: `stubbed`
   Shortcut definitions exist in `src/lib/keyboard/shortcuts.ts`, but there is no event handling.
-- Prisma/SQLite persistence layer: `stubbed`
-  Draft schema and client stub exist, but nothing executes end-to-end.
+- Prisma/SQLite persistence layer: `partially implemented`
+  The datasource, generated client, and first migration scaffold are verified, but no CRUD behavior or app integration exists yet.
 - Unit tests for pure color logic: `partially implemented`
   Conversion utilities now have direct unit coverage, but harmony, adjustments, contrast, accessibility, and export formatting tests are still missing.
 - Component tests: `partially implemented`
   A single smoke test confirms the shell renders text.
 - E2E tests: `partially implemented`
-  A single smoke test checks the landing page only.
+  A single smoke test now checks the landing page and theme toggle flow using Playwright against a local server.
 
 ## 3. Spec Alignment
 
@@ -131,6 +133,7 @@ PaletteForge is now an executable early-stage shell with the first color utility
 
 - The spec expects a runnable baseline app and toolchain as the first milestone outcome. That baseline now exists and the shell has been browser-verified in light, dark, and a mobile viewport, but the shell is still static.
 - The spec's first color milestone is only partially complete: conversions exist and are tested, but harmony and adjustment logic are still pending.
+- Persistence setup is ahead of persistence feature wiring: the schema, local SQLite database, generated client, and first migration scaffold exist before any CRUD routes or DB services are implemented.
 - The spec recommends a larger component surface area than currently exists. The current implementation intentionally compressed that to placeholders, which is acceptable for scaffold stage but not for Milestone 3.
 - The recommended API surface includes collection item update/delete routes; the route placeholder exists, but the feature is still not wired.
 
@@ -144,42 +147,56 @@ PaletteForge is now an executable early-stage shell with the first color utility
 
 ## 4. Active Sprint
 
-### Task 4
+### Task 6
 
-Task statement: Verify persistence foundations.
+Task statement: Implement harmony generation primitives.
 
-Objective: generate Prisma client, validate the SQLite path, and ensure the schema is executable without adding v2 fields.
-
-Expected outcome:
-
-- `npm run db:generate` completes
-- the schema is ready for the first migration
-- Prisma client wiring is confirmed usable from app code
-
-### Task 5
-
-Task statement: Upgrade test scaffolding from placeholder to baseline coverage.
-
-Objective: keep the smoke tests, but add the first meaningful unit tests and confirm Vitest and Playwright configs actually run.
+Objective: build complementary, monochromatic, and shades/tints helpers in `src/lib/color/harmony.ts` with deterministic output rules.
 
 Expected outcome:
 
-- the unit test suite covers conversion happy paths and basic invalid input
-- the component smoke test still passes
-- the E2E smoke test is confirmed against the local app
+- harmony helpers return valid 5-swatch planning data
+- supported modes stay limited to v1 scope
+- unit tests cover representative harmony cases
+
+### Task 7
+
+Task statement: Build `generatePalette` with locked swatch awareness.
+
+Objective: wire the conversion layer and harmony helpers into `src/lib/color/generate-palette.ts`, preserving locked swatches and valid swatch shape output.
+
+Expected outcome:
+
+- unlocked colors generate around a seed or locked anchor
+- locked swatches remain unchanged
+- unit tests cover locked preservation and output shape
+
+### Task 8
+
+Task statement: Implement contrast and accessibility utilities.
+
+Objective: add relative luminance, contrast ratio, grading, and matrix generation in the accessibility layer with tests.
+
+Expected outcome:
+
+- WCAG contrast helpers are implemented and deterministic
+- accessibility utilities stay pure and framework-agnostic
+- unit tests cover black/white ratio and grade thresholds
 
 ## 5. Risks And Blockers
 
-- Runtime shell behavior is now verified, and the first domain unit tests exist, but persistence remains completely unverified.
-  Suggested fix: run `npm run db:generate` next and validate the SQLite path plus Prisma client setup in the same cycle.
+- Runtime shell behavior, persistence foundations, and baseline smoke tests are now verified, but there is still no feature-level business logic beyond color conversions.
+  Suggested fix: focus the next sprint on pure harmony/generation/accessibility utilities before any UI wiring.
 - ESLint config is minimal and currently passes, but it may still be looser than the long-term Next.js rule set you want.
   Suggested fix: tighten the flat config after the shell is stable so lint evolution does not block the current sprint.
 - shadcn/ui is only represented by `components.json`.
   Suggested fix: initialize only the components needed for the shell once the baseline toolchain is working.
-- All domain modules throw `not implemented` errors.
-  Suggested fix: start with conversion utilities and keep the rest stubbed until each sprint task is active.
+- Many domain modules still throw `not implemented` errors.
+  Suggested fix: continue replacing them in vertical slices, starting with harmony and palette generation.
 - API routes all return `501`.
   Suggested fix: do not wire frontend save/history/export interactions until service functions and Prisma execution are ready.
+- The aggregated `npm run test:all` flow is still sensitive to this non-interactive automation environment when it has to cold-start the local dev server.
+  Suggested fix: rely on the verified standalone gates (`typecheck`, `lint`, `test`, `test:e2e`) in automation until the aggregator is revisited.
 - `.DS_Store` files are present in the tree.
   Suggested fix: remove them during a housekeeping pass so they do not pollute future diffs.
 
@@ -187,4 +204,4 @@ Expected outcome:
 
 - Remove `.DS_Store` files from tracked workspace paths.
 - Keep placeholder modules, but avoid adding more empty files until the current sprint tasks are executed.
-- Keep the shell visuals stable while Task 4 focuses on Prisma and SQLite verification; do not mix persistence setup with more UI redesign.
+- Keep the shell visuals stable while the next sprint focuses on pure color engine depth; do not mix harmony/accessibility work with more UI redesign.

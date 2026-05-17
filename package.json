@@ -6,6 +6,7 @@
   "packageManager": "npm@10",
   "scripts": {
     "dev": "next dev",
+    "dev:local": "next dev --hostname 127.0.0.1 --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -13,8 +14,8 @@
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
     "test:component": "vitest run tests/component",
-    "test:e2e": "playwright test",
-    "test:all": "npm run typecheck && npm run lint && npm run test && npm run test:e2e",
+    "test:e2e": "node ./scripts/run-e2e.mjs",
+    "test:all": "node ./scripts/run-test-all.mjs",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
