@@ -5,6 +5,7 @@ dist
 .env
 .DS_Store
 .idea
+*.tsbuildinfo
 playwright-report
 test-results
 prisma/dev.db

@@ -4,7 +4,7 @@
 
 ### Project Status
 
-PaletteForge is currently an initialization scaffold. The repository has the intended folder structure, starter config files, placeholder UI, draft Prisma schema, and smoke-test stubs, but it does not yet implement the product behavior described in `/docs/spec.md`.
+PaletteForge is now an executable early-stage shell. The repository has a validated dependency baseline, a styled design-tool workspace shell with a functioning local theme toggle, a draft Prisma schema, and smoke-test coverage. Core palette logic and persistence workflows are still not implemented.
 
 `/docs/current-state.md` did not exist before this recovery pass. `/docs/init.md` exists and accurately describes the initialization outcome.
 
@@ -23,8 +23,8 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 ### Frontend Architecture
 
 - `src/app/layout.tsx` and `src/app/page.tsx` provide a minimal App Router entry point.
-- `src/components/app-shell/AppShell.tsx` renders a placeholder three-region layout that roughly matches the spec.
-- Panel components under `src/components/*` are static placeholders with explanatory text rather than connected feature UIs.
+- `src/components/app-shell/AppShell.tsx` is now a client shell component that manages light/dark preview state and composes the toolbar, center canvas, side panels, and status bar.
+- Panel components under `src/components/*` are now styled shell surfaces with realistic static structure, but they are still not connected to feature logic.
 - `src/lib/constants.ts` provides sample swatch data for display only.
 - Hooks and stores exist only as stubs and are not wired into the UI.
 
@@ -58,7 +58,7 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 ### Core Product Features
 
 - Generate a new 5-color palette: `stubbed`
-  UI shell exists, but no generation logic or user interaction is implemented.
+  UI shell exists with a stronger central canvas, but no generation logic or user interaction is implemented.
 - Generate palettes using formal harmony rules: `stubbed`
   Harmony types are modeled in TypeScript, but generation functions are unimplemented.
 - Use a manually selected seed color: `missing`
@@ -74,9 +74,9 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 - Save palettes: `missing`
   Save controls are visual placeholders only; no persistence flow exists.
 - Review palette history: `stubbed`
-  History panel placeholder exists; no history persistence or listing exists.
+  History panel shell exists; no history persistence or listing exists.
 - Organize saved palettes into simple named collections: `stubbed`
-  Draft schema and panel placeholder exist; there is no CRUD flow.
+  Draft schema and panel shell exist; there is no CRUD flow.
 - Favorite palettes: `stubbed`
   Schema fields exist; no UI or persistence flow exists.
 - Add optional palette names: `stubbed`
@@ -86,14 +86,14 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 - Add optional tags: `stubbed`
   Schema supports it; the UI and APIs do not.
 - Export palettes: `stubbed`
-  Export panel exists, but formatter and PNG export logic are unimplemented.
+  Export panel shell exists, but formatter and PNG export logic are unimplemented.
 - Check accessibility through contrast ratios and text previews: `stubbed`
-  Accessibility panel exists, but contrast logic and preview rendering are unimplemented.
+  Accessibility panel shell exists, but contrast logic and preview rendering are unimplemented.
 
 ### Supporting Engineering Features
 
 - Light/dark mode: `partially implemented`
-  CSS variables and `.dark` tokens exist, but there is no theme toggle behavior or verification.
+  CSS variables, local theme toggle behavior, and browser verification exist, but persistence to user settings is not implemented.
 - Keyboard shortcuts: `stubbed`
   Shortcut definitions exist in `src/lib/keyboard/shortcuts.ts`, but there is no event handling.
 - Prisma/SQLite persistence layer: `stubbed`
@@ -117,7 +117,7 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 
 ### Missing Items
 
-- Milestone 1 is not actually complete because dependency installation and baseline verification have not been performed.
+- Milestone 1 is not actually complete because shadcn/ui has not been initialized beyond `components.json`, the shell is not yet backed by real controls, and runtime coverage is still minimal.
 - shadcn/ui is not installed or generated yet; only `components.json` is present.
 - No core color utilities are implemented.
 - No palette state management exists.
@@ -129,7 +129,7 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 
 ### Deviations
 
-- The spec expects a runnable baseline app and toolchain as the first milestone outcome. The repo currently contains a scaffold that still needs execution validation.
+- The spec expects a runnable baseline app and toolchain as the first milestone outcome. That baseline now exists and the shell has been browser-verified in light, dark, and a mobile viewport, but the shell is still static.
 - The spec recommends a larger component surface area than currently exists. The current implementation intentionally compressed that to placeholders, which is acceptable for scaffold stage but not for Milestone 3.
 - The recommended API surface includes collection item update/delete routes; the route placeholder exists, but the feature is still not wired.
 
@@ -142,31 +142,6 @@ PaletteForge is currently an initialization scaffold. The repository has the int
 - Some directories and placeholder modules were created before they are needed. This is acceptable, but further expansion should stop until the executable baseline is verified.
 
 ## 4. Active Sprint
-
-### Task 1
-
-Task statement: Make the scaffold executable.
-
-Objective: install dependencies and confirm the baseline toolchain works locally.
-
-Expected outcome:
-
-- `npm install` completes
-- `npm run typecheck` completes
-- `npm run lint` completes
-- the repo has a working lockfile
-
-### Task 2
-
-Task statement: Finish the real Milestone 1 shell.
-
-Objective: turn the placeholder app shell into a stable, styled layout with clear left, center, and right workspace regions plus a theme toggle stub.
-
-Expected outcome:
-
-- the app renders a coherent design-tool shell
-- the toolbar, canvas, and panels are visually consistent
-- light and dark mode can both be previewed from the UI
 
 ### Task 3
 
@@ -206,10 +181,10 @@ Expected outcome:
 
 ## 5. Risks And Blockers
 
-- Dependencies are not installed or verified.
-  Suggested fix: run `npm install` first, then execute `typecheck`, `lint`, and tests before building more code.
-- ESLint config is minimal and may not reflect the intended Next.js rule set.
-  Suggested fix: validate the current flat config against the installed Next.js version during Task 1.
+- Runtime shell behavior is now verified, but there is still no meaningful unit coverage for actual domain logic.
+  Suggested fix: implement conversion utilities next and add unit tests in the same cycle.
+- ESLint config is minimal and currently passes, but it may still be looser than the long-term Next.js rule set you want.
+  Suggested fix: tighten the flat config after the shell is stable so lint evolution does not block the current sprint.
 - shadcn/ui is only represented by `components.json`.
   Suggested fix: initialize only the components needed for the shell once the baseline toolchain is working.
 - All domain modules throw `not implemented` errors.
@@ -223,4 +198,4 @@ Expected outcome:
 
 - Remove `.DS_Store` files from tracked workspace paths.
 - Keep placeholder modules, but avoid adding more empty files until the current sprint tasks are executed.
-- Tighten the docs after Task 1 completes so `init.md` and `current-state.md` do not drift from the actual executable state.
+- Keep the shell visuals stable while Task 3 focuses on pure utilities; do not mix color-engine work with more shell redesign.

@@ -1,10 +1,25 @@
+const savedPaletteRows = [
+  { name: "Harbor Signal", meta: "Favorite placeholder" },
+  { name: "Copper Thread", meta: "Tagged warm-neutral" },
+];
+
 export function SavedPalettesPanel() {
   return (
-    <section className="rounded-2xl border border-border/80 bg-white/80 p-3 dark:bg-slate-950/70">
-      <h3 className="m-0 text-sm font-semibold">Saved Palettes</h3>
-      <p className="mb-0 mt-2 text-sm text-slate-600 dark:text-slate-300">
-        Saved palettes, favorites, tags, and notes are represented in the schema but not wired yet.
-      </p>
+    <section className="rounded-[1.5rem] border border-border/60 bg-panel p-4">
+      <h3 className="m-0 text-sm font-semibold uppercase tracking-[0.16em] text-foreground">
+        Saved Palettes
+      </h3>
+      <div className="mt-4 space-y-2">
+        {savedPaletteRows.map((palette) => (
+          <div
+            key={palette.name}
+            className="rounded-2xl border border-border/60 bg-card px-3 py-3"
+          >
+            <div className="text-sm font-medium text-foreground">{palette.name}</div>
+            <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{palette.meta}</div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

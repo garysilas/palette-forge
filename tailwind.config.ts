@@ -7,6 +7,8 @@ const config: Config = {
     extend: {
       colors: {
         surface: "hsl(var(--surface))",
+        panel: "hsl(var(--panel))",
+        card: "hsl(var(--card))",
         border: "hsl(var(--border))",
         muted: "hsl(var(--muted))",
         accent: "hsl(var(--accent))",

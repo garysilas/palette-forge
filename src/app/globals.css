@@ -3,19 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --surface: 220 22% 97%;
-  --border: 220 16% 85%;
-  --muted: 215 18% 92%;
-  --accent: 198 68% 48%;
-  --foreground: 220 22% 14%;
+  --surface: 42 35% 95%;
+  --panel: 36 26% 98%;
+  --card: 0 0% 100%;
+  --border: 32 18% 81%;
+  --muted: 36 24% 90%;
+  --accent: 199 56% 38%;
+  --foreground: 212 34% 11%;
 }
 
 .dark {
-  --surface: 224 24% 10%;
-  --border: 220 18% 20%;
-  --muted: 222 18% 16%;
-  --accent: 193 82% 58%;
-  --foreground: 220 18% 96%;
+  --surface: 214 34% 8%;
+  --panel: 214 28% 10%;
+  --card: 214 23% 14%;
+  --border: 214 16% 22%;
+  --muted: 214 18% 18%;
+  --accent: 186 57% 55%;
+  --foreground: 40 27% 94%;
 }
 
 * {
@@ -26,9 +30,22 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: radial-gradient(circle at top, rgba(63, 113, 168, 0.16), transparent 30%), hsl(var(--surface));
+  background:
+    radial-gradient(circle at top left, rgba(235, 163, 52, 0.14), transparent 28%),
+    radial-gradient(circle at top right, rgba(42, 157, 143, 0.18), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0)),
+    hsl(var(--surface));
   color: hsl(var(--foreground));
-  font-family: "SF Pro Display", "Segoe UI", sans-serif;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+body.dark,
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(233, 196, 106, 0.08), transparent 28%),
+    radial-gradient(circle at top right, rgba(42, 157, 143, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+    hsl(var(--surface));
 }
 
 button,
@@ -40,4 +57,14 @@ textarea {
 
 a {
   color: inherit;
+}
+
+::selection {
+  background: rgba(42, 157, 143, 0.28);
+}
+
+.shell-glow {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(231, 111, 81, 0.12), transparent 0, transparent 30%),
+    radial-gradient(circle at 85% 10%, rgba(38, 70, 83, 0.16), transparent 0, transparent 28%);
 }
