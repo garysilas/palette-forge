@@ -4,7 +4,7 @@
 
 ### Project Status
 
-PaletteForge is now an executable early-stage shell. The repository has a validated dependency baseline, a styled design-tool workspace shell with a functioning local theme toggle, a draft Prisma schema, and smoke-test coverage. Core palette logic and persistence workflows are still not implemented.
+PaletteForge is now an executable early-stage shell with the first color utility layer in place. The repository has a validated dependency baseline, a styled design-tool workspace shell with a functioning local theme toggle, implemented HEX/RGB/HSL conversion utilities, a draft Prisma schema, and baseline unit plus smoke-test coverage. Harmony generation, adjustments, and persistence workflows are still not implemented.
 
 `/docs/current-state.md` did not exist before this recovery pass. `/docs/init.md` exists and accurately describes the initialization outcome.
 
@@ -48,10 +48,10 @@ PaletteForge is now an executable early-stage shell. The repository has a valida
 
 - `src/app`: route entry points and future API handlers.
 - `src/components`: shell, canvas, and panel presentation components.
-- `src/lib/color`: intended location for pure color logic, currently stubbed.
+- `src/lib/color`: pure color-domain logic; conversions are now implemented, while harmony, adjustments, accessibility, and export helpers are still stubbed.
 - `src/lib/db`: intended database service layer, currently stubbed.
 - `src/types`: shared domain types for palette, accessibility, collections, and export concerns.
-- `tests/*`: smoke-level scaffolding only.
+- `tests/*`: baseline unit coverage for conversions plus smoke-level component coverage.
 
 ## 2. Feature Status
 
@@ -98,8 +98,8 @@ PaletteForge is now an executable early-stage shell. The repository has a valida
   Shortcut definitions exist in `src/lib/keyboard/shortcuts.ts`, but there is no event handling.
 - Prisma/SQLite persistence layer: `stubbed`
   Draft schema and client stub exist, but nothing executes end-to-end.
-- Unit tests for pure color logic: `missing`
-  Only smoke tests exist; no logic tests exist because the logic is not implemented.
+- Unit tests for pure color logic: `partially implemented`
+  Conversion utilities now have direct unit coverage, but harmony, adjustments, contrast, accessibility, and export formatting tests are still missing.
 - Component tests: `partially implemented`
   A single smoke test confirms the shell renders text.
 - E2E tests: `partially implemented`
@@ -119,7 +119,7 @@ PaletteForge is now an executable early-stage shell. The repository has a valida
 
 - Milestone 1 is not actually complete because shadcn/ui has not been initialized beyond `components.json`, the shell is not yet backed by real controls, and runtime coverage is still minimal.
 - shadcn/ui is not installed or generated yet; only `components.json` is present.
-- No core color utilities are implemented.
+- Only the first color utility layer is implemented; generation, adjustment, contrast, and accessibility logic are still missing.
 - No palette state management exists.
 - No API route behavior exists beyond `501` responses.
 - No save/history/collection flows exist.
@@ -130,6 +130,7 @@ PaletteForge is now an executable early-stage shell. The repository has a valida
 ### Deviations
 
 - The spec expects a runnable baseline app and toolchain as the first milestone outcome. That baseline now exists and the shell has been browser-verified in light, dark, and a mobile viewport, but the shell is still static.
+- The spec's first color milestone is only partially complete: conversions exist and are tested, but harmony and adjustment logic are still pending.
 - The spec recommends a larger component surface area than currently exists. The current implementation intentionally compressed that to placeholders, which is acceptable for scaffold stage but not for Milestone 3.
 - The recommended API surface includes collection item update/delete routes; the route placeholder exists, but the feature is still not wired.
 
@@ -142,18 +143,6 @@ PaletteForge is now an executable early-stage shell. The repository has a valida
 - Some directories and placeholder modules were created before they are needed. This is acceptable, but further expansion should stop until the executable baseline is verified.
 
 ## 4. Active Sprint
-
-### Task 3
-
-Task statement: Implement the first pure color utilities.
-
-Objective: complete `normalizeHex`, HEX/RGB/HSL conversion helpers, and the shared palette domain types with unit coverage.
-
-Expected outcome:
-
-- `src/lib/color/conversions.ts` is implemented
-- conversion tests exist and pass
-- the color engine has a reliable base for later harmony work
 
 ### Task 4
 
@@ -181,8 +170,8 @@ Expected outcome:
 
 ## 5. Risks And Blockers
 
-- Runtime shell behavior is now verified, but there is still no meaningful unit coverage for actual domain logic.
-  Suggested fix: implement conversion utilities next and add unit tests in the same cycle.
+- Runtime shell behavior is now verified, and the first domain unit tests exist, but persistence remains completely unverified.
+  Suggested fix: run `npm run db:generate` next and validate the SQLite path plus Prisma client setup in the same cycle.
 - ESLint config is minimal and currently passes, but it may still be looser than the long-term Next.js rule set you want.
   Suggested fix: tighten the flat config after the shell is stable so lint evolution does not block the current sprint.
 - shadcn/ui is only represented by `components.json`.
@@ -198,4 +187,4 @@ Expected outcome:
 
 - Remove `.DS_Store` files from tracked workspace paths.
 - Keep placeholder modules, but avoid adding more empty files until the current sprint tasks are executed.
-- Keep the shell visuals stable while Task 3 focuses on pure utilities; do not mix color-engine work with more shell redesign.
+- Keep the shell visuals stable while Task 4 focuses on Prisma and SQLite verification; do not mix persistence setup with more UI redesign.

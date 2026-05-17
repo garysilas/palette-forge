@@ -1,11 +1,11 @@
 # Last Task
 
-- Completed task: Task 2, `Finish the real Milestone 1 shell`
+- Completed task: Task 3, `Implement the first pure color utilities`
 - Date: 2026-05-16
 - Outcome:
-  - the app shell was redesigned into a coherent three-region workspace
-  - the local theme toggle was implemented and browser-verified in light and dark mode
-  - the shell layout was spot-checked at a mobile viewport
-  - `npm run typecheck`, `npm run lint`, and `npm run test:component` passed
+  - HEX, RGB, and HSL conversion utilities were implemented in `src/lib/color/conversions.ts`
+  - invalid input handling was added for malformed HEX and out-of-range numeric channels
+  - focused unit coverage was added for normalization, conversion, and hue wrapping
+  - `npm run typecheck`, `npm run lint`, `npm run test:unit`, and `npm run test` passed
 - Next task:
-  - Task 3, `Implement the first pure color utilities`
+  - Task 4, `Verify persistence foundations`
